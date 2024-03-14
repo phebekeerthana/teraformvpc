@@ -7,3 +7,5 @@ resource "aws_instance" "tester" {
     }
   
 }
+
+  
