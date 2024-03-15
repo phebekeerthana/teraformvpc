@@ -38,7 +38,36 @@ resource "aws_instance" "dev" {
   instance_type = var.instance_type
   key_name = var.key_name
   subnet_id = aws_subnet.dev.id
+  associate_public_ip_address = true
+  security_groups = [ aws_security_group.dev.id ]
   tags = {
     Name = "myec2"
+  }
+}
+#creating security groups
+resource "aws_security_group" "dev" {
+  vpc_id = aws_vpc.dev.id
+  tags = {
+    Name = "mydev"
+  }
+   ingress {
+    description      = "TLS from VPC"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "TLS from vpc"
+    from_port = 22
+    to_port = 22
+    protocol ="tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [ "0.0.0.0/0" ]
   }
 }
