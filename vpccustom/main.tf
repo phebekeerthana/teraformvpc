@@ -14,6 +14,7 @@ resource "aws_internet_gateway" "dev" {
 #create subnets
 resource "aws_subnet" "dev" {
     vpc_id = aws_vpc.dev.id
+    availability_zone = "ap-south-1a"
     cidr_block = "10.0.0.0/24"
   
 }
@@ -29,6 +30,7 @@ resource "aws_route_table" "dev" {
 #subnet association 
 resource "aws_route_table_association" "dev" {
     route_table_id = aws_route_table.dev.id
+    
     subnet_id = aws_subnet.dev.id
   
 }
@@ -37,6 +39,7 @@ resource "aws_instance" "dev" {
   ami = var.ami_id
   instance_type = var.instance_type
   key_name = var.key_name
+  availability_zone = "ap-south-1a"
   subnet_id = aws_subnet.dev.id
   associate_public_ip_address = true
   security_groups = [ aws_security_group.dev.id ]
